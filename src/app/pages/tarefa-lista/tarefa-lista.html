@@ -1,0 +1,64 @@
+<h2>Lista de Tarefas</h2>
+
+<a routerLink="/tarefa/nova">+ Nova Tarefa</a>
+<br><br>
+
+<!-- 🔎 Busca -->
+<input
+  type="text"
+  placeholder="Buscar..."
+  [(ngModel)]="busca"
+  (input)="aplicarFiltros()"
+/>
+
+<br><br>
+
+<!-- 🎯 Filtros -->
+<select [(ngModel)]="filtroCategoria" (change)="aplicarFiltros()">
+  <option value="">Todas categorias</option>
+  <option value="Trabalho">Trabalho</option>
+  <option value="Pessoal">Pessoal</option>
+  <option value="Estudos">Estudos</option>
+  <option value="Outros">Outros</option>
+</select>
+
+<select [(ngModel)]="filtroPrioridade" (change)="aplicarFiltros()">
+  <option value="">Todas prioridades</option>
+  <option value="Alta">Alta</option>
+  <option value="Média">Média</option>
+  <option value="Baixa">Baixa</option>
+</select>
+
+<select [(ngModel)]="filtroStatus" (change)="aplicarFiltros()">
+  <option value="">Todos status</option>
+  <option value="pendente">Pendente</option>
+  <option value="concluida">Concluída</option>
+</select>
+
+<br><br>
+
+<!-- 📋 Lista -->
+<div *ngIf="tarefasFiltradas.length === 0">
+  Nenhuma tarefa encontrada.
+</div>
+
+<div *ngFor="let tarefa of tarefasFiltradas">
+  <h3>{{ tarefa.titulo }}</h3>
+  <p>{{ tarefa.descricao }}</p>
+
+  <p><b>Categoria:</b> {{ tarefa.categoria }}</p>
+  <p><b>Prioridade:</b> {{ tarefa.prioridade }}</p>
+  <p><b>Status:</b> {{ tarefa.concluida ? 'Concluída' : 'Pendente' }}</p>
+
+  <button (click)="alterarStatus(tarefa.id)">
+    {{ tarefa.concluida ? 'Desmarcar' : 'Concluir' }}
+  </button>
+
+  <button (click)="excluir(tarefa.id)">Excluir</button>
+
+  <button [routerLink]="['/tarefa/editar', tarefa.id]">
+    Editar
+  </button>
+
+  <hr>
+</div>
